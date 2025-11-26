@@ -28,6 +28,20 @@ const logger = (req, res, next) => {
     next();
 }
 
+// CORS 
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
+
+    // If the browser is asking "Can I connect?", say YES (200 OK) immediately.
+    if (req.method === 'OPTIONS') {
+        return res.sendStatus(200);
+    }
+    next();
+});
+
+
 app.use(express.json());
 app.use(logger);
 
@@ -133,4 +147,5 @@ app.post('/tic_tac_toe/:id', validMoves, async (req, res) => {
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`APP Running at http://localhost:` + PORT);
 })
+
 
